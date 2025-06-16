@@ -2,28 +2,56 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedido Sircom</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* --- Estilos Generales --- */
     body {
       font-family: 'Roboto', sans-serif;
-      background: #f8f8f8;
+      background: #f0f2f5;
       color: #333;
-      padding: 30px;
-      max-width: 600px;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* --- Contenedor Principal (Flexbox) --- */
+    .contenedor-principal {
+      display: flex;
+      flex-wrap: wrap; /* Para que se adapte en móviles */
+      align-items: flex-start;
+      max-width: 1200px;
       margin: auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden; /* Para que los bordes redondeados se apliquen a los hijos */
+    }
+
+    /* --- Columna de la Imagen (Izquierda) --- */
+    .columna-imagen {
+      flex: 1; /* Ocupa 1 parte del espacio */
+      min-width: 300px; /* Ancho mínimo */
+      padding: 20px;
+    }
+    .columna-imagen img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    
+    /* --- Columna del Formulario (Derecha) --- */
+    .columna-formulario {
+      flex: 1.5; /* Ocupa 1.5 partes del espacio (más grande) */
+      min-width: 320px; /* Ancho mínimo */
+      padding: 30px;
+      background-color: #ffffff;
     }
 
     h1 {
       color: #0078ae;
       text-align: center;
-    }
-
-    form {
-        background-color: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-top: 0;
     }
 
     label {
@@ -32,12 +60,12 @@
       margin: 15px 0 5px;
     }
 
-    select, input[type="number"], input[type="text"] {
+    select, input[type="number"] {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+      box-sizing: border-box;
     }
 
     .precio {
@@ -59,69 +87,85 @@
       font-size: 1.1em;
       width: 100%;
     }
-
     button:hover {
       background-color: #218838;
     }
-
-    /* Estilo para ocultar opciones */
+    
     .hidden {
-        display: none;
+      display: none;
     }
-
+    
+    /* --- Estilos para Móviles (Responsive) --- */
+    @media (max-width: 768px) {
+      .contenedor-principal {
+        flex-direction: column; /* Apila las columnas verticalmente */
+      }
+      .columna-formulario {
+        border-top: 1px solid #eee; /* Añade un separador */
+      }
+    }
   </style>
 </head>
 <body>
 
-  <h1>Formulario de Pedido</h1>
-
-  <form id="pedidoForm" name="pedido">
-    <label for="tipoServicio">Tipo de Servicio:</label>
-    <select id="tipoServicio" name="servicio" required>
-      <option value="">Selecciona un servicio</option>
-      <option value="impresion_laser">Impresión Láser</option>
-      <option value="plotteo_tinta">Ploteo Tinta (Epson T7200)</option>
-      <option value="plotteo_laser">Ploteo Láser (MP 3601)</option>
-    </select>
-
-    <div id="opcionesImpresionLaser" class="hidden">
-        <label for="tipoColorLaser">Tipo de Color:</label>
-        <select id="tipoColorLaser" name="tipoColor">
-            <option value="bn">Blanco y Negro</option>
-            <option value="color">Color</option>
-        </select>
-
-        <label for="papelLaser">Tipo de Papel:</label>
-        <select id="papelLaser" name="papel">
-            <option value="bond">Bond</option>
-            <option value="couche">Couché</option>
-            <option value="opalina">Opalina</option>
-            <option value="adhesivo">Adhesivo</option>
-            <option value="vegetal">Vegetal</option>
-        </select>
-        
-        <label for="tamanoLaser">Tamaño:</label>
-        <select id="tamanoLaser" name="tamano">
-            <option value="carta">Carta</option>
-            <option value="oficio">Oficio</option>
-            <option value="doble_carta">Doble Carta (Tabloide)</option>
-            <option value="doble_oficio">Doble Oficio</option>
-        </select>
+  <div class="contenedor-principal">
+    
+    <div class="columna-imagen">
+      <img src="https://cdn.discordapp.com/attachments/1318476635900612611/1384066277118574643/Plotter_Sircom_con_papeles_labels.png?ex=685113ab&is=684fc22b&hm=2e6ba45a91003bd8384283f47560a41e94e8412dfaca9e2da44815a7992d956e&" alt="Ploteo e Impresiones Sircom">
     </div>
 
-    <div id="opcionesPlotteo" class="hidden">
-        <label for="papelPlotteo">Tipo de Papel:</label>
-        <select id="papelPlotteo" name="papel">
+    <div class="columna-formulario">
+      <h1>Formulario de Pedido</h1>
+      <form id="pedidoForm" name="pedido">
+        <label for="tipoServicio">Tipo de Servicio:</label>
+        <select id="tipoServicio" name="servicio" required>
+          <option value="">Selecciona un servicio</option>
+          <option value="impresion_laser">Impresión Láser</option>
+          <option value="plotteo_tinta">Ploteo Tinta (Epson T7200)</option>
+          <option value="plotteo_laser">Ploteo Láser (MP 3601)</option>
+        </select>
+
+        <div id="opcionesImpresionLaser" class="hidden">
+            <label for="tipoColorLaser">Tipo de Color:</label>
+            <select id="tipoColorLaser" name="tipoColor">
+                <option value="bn">Blanco y Negro</option>
+                <option value="color">Color</option>
             </select>
+
+            <label for="papelLaser">Tipo de Papel:</label>
+            <select id="papelLaser" name="papel">
+                <option value="bond">Bond</option>
+                <option value="couche">Couché</option>
+                <option value="opalina">Opalina</option>
+                <option value="adhesivo">Adhesivo</option>
+                <option value="vegetal">Vegetal</option>
+            </select>
+            
+            <label for="tamanoLaser">Tamaño:</label>
+            <select id="tamanoLaser" name="tamano">
+                <option value="carta">Carta</option>
+                <option value="oficio">Oficio</option>
+                <option value="doble_carta">Doble Carta (Tabloide)</option>
+                <option value="doble_oficio">Doble Oficio</option>
+            </select>
+        </div>
+
+        <div id="opcionesPlotteo" class="hidden">
+            <label for="papelPlotteo">Tipo de Papel:</label>
+            <select id="papelPlotteo" name="papel">
+                </select>
+        </div>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+
+        <p class="precio">Total: $<span id="total">0</span> CLP</p>
+
+        <button type="submit">Agregar al Carrito</button>
+      </form>
     </div>
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
-
-    <p class="precio">Total: $<span id="total">0</span> CLP</p>
-
-    <button type="submit">Agregar al Carrito</button>
-  </form>
+  </div>
 
   <script>
     const precios = {
@@ -153,20 +197,14 @@
       }
     };
 
-    // --- Elementos del DOM ---
     const form = document.getElementById('pedidoForm');
     const totalDisplay = document.getElementById('total');
     const tipoServicioSelect = document.getElementById('tipoServicio');
-    
     const opcionesImpresionLaser = document.getElementById('opcionesImpresionLaser');
     const opcionesPlotteo = document.getElementById('opcionesPlotteo');
-    
     const papelPlotteoSelect = document.getElementById('papelPlotteo');
 
-    // --- Lógica de actualización ---
-    
     tipoServicioSelect.addEventListener('change', function() {
-        // Ocultar todas las opciones primero
         opcionesImpresionLaser.classList.add('hidden');
         opcionesPlotteo.classList.add('hidden');
         
@@ -176,14 +214,12 @@
             opcionesImpresionLaser.classList.remove('hidden');
         } else if (servicio === 'plotteo_tinta' || servicio === 'plotteo_laser') {
             opcionesPlotteo.classList.remove('hidden');
-            // Llenar las opciones de papel para plotteo dinámicamente
-            papelPlotteoSelect.innerHTML = ''; // Limpiar opciones anteriores
+            papelPlotteoSelect.innerHTML = '';
             const papelesDisponibles = Object.keys(precios[servicio]);
             
             papelesDisponibles.forEach(papel => {
                 const option = document.createElement('option');
                 option.value = papel;
-                // Formatear el nombre para mostrar (ej: semi_glossy -> Semi Glossy)
                 option.textContent = papel.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
                 papelPlotteoSelect.appendChild(option);
             });
@@ -211,10 +247,8 @@
         totalDisplay.textContent = total.toLocaleString('es-CL');
     }
 
-    // Escuchar cambios en cualquier input o select del formulario
     form.addEventListener('input', calcularTotal);
 
-    // Simulación de envío
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       const totalFinal = totalDisplay.textContent;
@@ -225,9 +259,9 @@
       }
     });
 
-    // Iniciar el cálculo al cargar la página
+    // Iniciar con el primer servicio seleccionado si es necesario
+    // o dejarlo en blanco para que el usuario elija
     calcularTotal();
-
   </script>
 
 </body>
