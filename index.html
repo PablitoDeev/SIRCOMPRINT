@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario de Pedido - Sircom</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    #precioFinal {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Formulario de Pedido - Sircom</h2>
+
+  <label for="servicio">Selecciona un servicio:</label>
+  <select id="servicio" onchange="mostrarOpciones()">
+    <option value="">-- Selecciona --</option>
+    <option value="ploteo">Ploteo</option>
+    <option value="impresion">Impresión Láser</option>
+  </select>
+
+  <form id="formulario">
+    <div id="opcionesPloteo" class="hidden">
+      <label>Papel:</label>
+      <select name="papel">
+        <option>Bond</option>
+        <option>Mate</option>
+        <option>Semi Glossy</option>
+        <option>Poliéster</option>
+      </select>
+      <label>Color:</label>
+      <select name="color">
+        <option>Blanco y Negro</option>
+        <option>Color</option>
+      </select>
+      <label>Tamaño:</label>
+      <select name="tamano">
+        <option>A3</option>
+        <option>A2</option>
+        <option>A1</option>
+        <option>A0</option>
+        <option>30x40 cm</option>
+      </select>
+      <label>Cantidad:</label>
+      <input type="number" name="cantidad" min="1" value="1" />
+    </div>
+
+    <div id="opcionesImpresion" class="hidden">
+      <label>Papel:</label>
+      <select name="papel">
+        <option>Bond</option>
+        <option>Couché Brillante</option>
+        <option>Couché Opaco</option>
+        <option>Opalina Lisa</option>
+        <option>Opalina Texturada</option>
+        <option>Adhesivo Brillante</option>
+        <option>Adhesivo Opaco</option>
+      </select>
+      <label>Tamaño:</label>
+      <select name="tamano">
+        <option>Carta</option>
+        <option>Tabloide</option>
+        <option>Doble carta</option>
+        <option>Doble oficio</option>
+      </select>
+      <label>Color:</label>
+      <select name="color">
+        <option>Blanco y Negro</option>
+        <option>Color</option>
+      </select>
+      <label>Cantidad:</label>
+      <input type="number" name="cantidad" min="1" value="1" />
+    </div>
+
+    <div id="precioFinal"></div>
+    <button type="button" onclick="calcularPrecio()">Calcular precio</button>
+    <button type="submit">Pagar ahora</button>
+  </form>
+
+  <script>
+    function mostrarOpciones() {
+      const servicio = document.getElementById('servicio').value;
+      document.getElementById('opcionesPloteo').classList.add('hidden');
+      document.getElementById('opcionesImpresion').classList.add('hidden');
+      if (servicio === 'ploteo') {
+        document.getElementById('opcionesPloteo').classList.remove('hidden');
+      } else if (servicio === 'impresion') {
+        document.getElementById('opcionesImpresion').classList.remove('hidden');
+      }
+    }
+
+    function calcularPrecio() {
+      const servicio = document.getElementById('servicio').value;
+      const form = document.getElementById('formulario');
+      const datos = new FormData(form);
+      const cantidad = parseInt(datos.get('cantidad')) || 1;
+      let precioBase = 1000;
+
+      if (servicio === 'ploteo') {
+        precioBase += datos.get('papel') === 'Poliéster' ? 1500 : 500;
+        precioBase += datos.get('color') === 'Color' ? 1000 : 0;
+      } else if (servicio === 'impresion') {
+        precioBase += datos.get('papel').includes('Adhesivo') ? 800 : 300;
+        precioBase += datos.get('color') === 'Color' ? 700 : 0;
+      }
+
+      const total = precioBase * cantidad;
+      document.getElementById('precioFinal').textContent = `Precio total: $${total.toLocaleString('es-CL')} CLP`;
+    }
+
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Aquí iría la redirección al pago con WebPay / JumpSeller.');
+      // Aquí se conectaría EmailJS o redirección al checkout de JumpSeller
+    });
+  </script>
+</body>
+</html>
